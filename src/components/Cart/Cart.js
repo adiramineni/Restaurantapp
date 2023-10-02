@@ -1,12 +1,27 @@
+import React, { useContext } from 'react';
+
 import Modal from '../UI/Modal';
 import classes from './Cart.module.css';
+import CartContext from '../../store/cart-context';
 
 const Cart = (props) => {
+    const cartCtx = useContext(CartContext);
+
+    const groupedItems = {};
+  cartCtx.items.forEach((item) => {
+    if (!groupedItems[item.name]) {
+      groupedItems[item.name] = { ...item, totalQuantity: 0 };
+    }
+    groupedItems[item.name].totalQuantity += Number(item.quantity);
+    return item; // Return the item in the map function
+  });
+
     const cartItems = <ul className={classes['cart-items']}>
-        {[{id: 'c1', name: 'Sushi', amount: 2, price: 12.99}].map((item) => (
-        <li>{item.name}</li>
-        ))}
+        {Object.values(groupedItems).forEach((item) => 
+                <li key={item.id}>Name: {item.name} Price: {item.price} quantity: {item.quantity} </li>
+        )}
         </ul>;
+
     return (
         <Modal onClose={props.onClose} >
             {cartItems}
