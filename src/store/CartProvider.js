@@ -10,7 +10,11 @@ const CartProvider = (props) => {
         console.log('inside addItemToCartHandler', cartContext)
     };
 
-    const removeItemFromCartHandler = (id) => {};
+    const removeItemFromCartHandler = (id) => {
+        const updatedItems = items.filter((item) => item.id !== id);
+        updateItems(updatedItems);
+    
+    };
 
     const cartContext = {
         items: items,
